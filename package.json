@@ -1,0 +1,37 @@
+{
+  "name": "digital-business-card",
+  "version": "1.0.0",
+  "description": "Digital business card: NestJS + GraphQL + Prisma + PostgreSQL",
+  "private": true,
+  "scripts": {
+    "build": "prisma generate && nest build",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:prod": "node dist/main.js",
+    "db:migrate": "prisma migrate deploy",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:seed": "node dist/database/seed/run.js",
+    "db:init": "npm run db:migrate && npm run db:seed",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@apollo/server": "^5.0.0",
+    "@as-integrations/express5": "^1.1.0",
+    "@nestjs/apollo": "^13.0.0",
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.0.0",
+    "@nestjs/graphql": "^13.0.0",
+    "@nestjs/platform-express": "^11.0.0",
+    "@prisma/client": "^6.0.0",
+    "dataloader": "^2.2.2",
+    "graphql": "^16.9.0",
+    "prisma": "^6.0.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.0",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}

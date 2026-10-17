@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: digital_card
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d digital_card"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/digital_card?schema=public
+      PROFILE_GITHUB_URL: ${PROFILE_GITHUB_URL:-}
+      PROFILE_LINKEDIN_URL: ${PROFILE_LINKEDIN_URL:-}
+      REPOSITORY_URL: ${REPOSITORY_URL:-}
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:

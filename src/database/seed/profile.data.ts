@@ -3,6 +3,10 @@ import { DEFAULT_PROFILE_SLUG } from '../../common/constants';
 
 const env = process.env;
 
+// Public links can be overridden through the environment (e.g. for a fork of the project).
+const githubUrl = env.PROFILE_GITHUB_URL || 'https://github.com/vcjfdtdvg4-creator';
+const repositoryUrl = env.REPOSITORY_URL || `${githubUrl}/digital-business-card`;
+
 export const profileData = {
   slug: DEFAULT_PROFILE_SLUG,
   name: 'Чернявский Алексей Владимирович',
@@ -17,8 +21,8 @@ export const profileData = {
 export const links: { label: string; url: string }[] = [
   { label: 'Telegram', url: 'https://t.me/L1ks0s' },
   { label: 'Email', url: 'mailto:alekseicherniavskii77@mail.ru' },
-  // Optional links are added only when configured, so no fake URLs end up in the data.
-  ...(env.PROFILE_GITHUB_URL ? [{ label: 'GitHub', url: env.PROFILE_GITHUB_URL }] : []),
+  { label: 'GitHub', url: githubUrl },
+  // LinkedIn is not in the resume, so it is added only when configured.
   ...(env.PROFILE_LINKEDIN_URL ? [{ label: 'LinkedIn', url: env.PROFILE_LINKEDIN_URL }] : []),
 ];
 
@@ -103,7 +107,7 @@ export const projects = [
     name: 'Digital Business Card (этот проект)',
     description:
       'GraphQL-визитка: NestJS, Prisma, PostgreSQL, DataLoader для батчинга вложенных запросов, авто-миграции и сидинг при старте в Docker.',
-    url: (env.REPOSITORY_URL || null) as string | null,
+    url: repositoryUrl as string | null,
     technologies: ['TypeScript', 'NestJS', 'GraphQL', 'Prisma', 'PostgreSQL', 'Docker'],
   },
 ];

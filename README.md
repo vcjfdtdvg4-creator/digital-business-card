@@ -8,10 +8,11 @@ GraphQL-визитка: **TypeScript · Node.js · NestJS · Prisma · GraphQL (
 docker compose up --build
 ```
 
-Откройте **http://localhost:3000/graphql** — Apollo Sandbox.
+Откройте **http://localhost:3000/graphql** — Apollo Sandbox (пример запроса уже подставлен).
 При старте контейнер сам применяет миграции (`prisma migrate deploy`) и заполняет БД (идемпотентный сид).
+Health check: `GET /health` (проверяет и соединение с БД).
 
-Свои ссылки (опционально) задаются переменными окружения:
+Ссылки профиля можно переопределить переменными окружения:
 `PROFILE_GITHUB_URL`, `PROFILE_LINKEDIN_URL`, `REPOSITORY_URL`.
 
 ## Пример запроса
@@ -24,7 +25,7 @@ query {
     description
     links { label url }
     skills { name category }
-    experience { company position startDate endDate isCurrent achievements }
+    experience { company position period startDate endDate isCurrent achievements }
     projects { name url technologies }
   }
 }
@@ -47,7 +48,8 @@ src/
   prisma/       PrismaService/Module (глобальный доступ к БД)
   profile/      модель, сервис, resolver корня графа (Query.profile)
   skills/       модель + сервис
-  experience/   модель + сервис + resolver (achievements, isCurrent)
+  experience/   модель + сервис + resolver (achievements, period, isCurrent)
+  health/       GET /health для Docker/Render
   projects/     модель + сервис
   graphql/      DataLoader'ы (по одному на запрос) и контекст
   database/seed данные визитки и идемпотентный сидинг
@@ -59,4 +61,9 @@ prisma/         schema.prisma и SQL-миграции
   вложенностями — максимум 6 SQL-запросов (profile, links, skills, experience, achievements,
   projects), независимо от числа записей, и только для запрошенных полей.
 * **Инициализация:** `docker-entrypoint.sh` → миграции → сид → старт приложения.
-* **Деплой (Render/Railway):** Docker-образ + managed PostgreSQL, переменная `DATABASE_URL`.
+
+## Деплой на Render
+
+В репозитории есть `render.yaml` (Blueprint): Docker web service + managed PostgreSQL (оба на free-плане).
+Render → **New → Blueprint** → выбрать репозиторий → **Apply**. `DATABASE_URL` подставится автоматически,
+миграции и сид выполнятся при старте контейнера. Sandbox будет доступен по `https://<service>.onrender.com/graphql`.

@@ -12,7 +12,9 @@ RUN npm run build
 # ---- runtime ----
 FROM node:22-slim
 RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
-ENV NODE_ENV=production
+ENV NODE_ENV=production \
+    PRISMA_HIDE_UPDATE_MESSAGE=1 \
+    NPM_CONFIG_UPDATE_NOTIFIER=false
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci --omit=dev

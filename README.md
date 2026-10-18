@@ -2,6 +2,9 @@
 
 GraphQL-визитка: **TypeScript · Node.js · NestJS · Prisma · GraphQL (Apollo) · PostgreSQL · Docker**.
 
+**Демо:** https://digital-business-card-hq83.onrender.com/graphql — Apollo Sandbox
+(free-инстанс Render засыпает без трафика, первый запрос может занять ~50 секунд).
+
 ## Запуск с нуля
 
 ```bash
